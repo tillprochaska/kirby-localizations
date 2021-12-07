@@ -1,0 +1,37 @@
+{
+  "name": "tillprochaska/kirby-localizations",
+  "description": "A flexible localization solution for Kirby 3.",
+  "license": "MIT",
+  "require-dev": {
+    "pestphp/pest": "^1.21",
+    "getkirby/cms": "3.6.1.1",
+    "friendsofphp/php-cs-fixer": "3.4"
+  },
+  "authors": [
+    {
+      "name": "Till Prochaska",
+      "email": "mail@tillprochaska.de"
+    }
+  ],
+  "scripts": {
+    "test": "pest --coverage",
+    "cs": "php-cs-fixer fix --dry-run --config=.php-cs -- src/ tests/ plugin/",
+    "cs:fix": "php-cs-fixer fix --config=.php-cs -- src/ tests/ plugin/"
+  },
+  "autoload": {
+    "psr-4": {
+      "TillProchaska\\KirbyLocalizations\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "TillProchaska\\KirbyLocalizations\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "kirby-cms-path": false
+  },
+  "require": {
+    "getkirby/composer-installer": "^1.2"
+  }
+}

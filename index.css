@@ -1,0 +1,27 @@
+.k-localizations-section .k-item[data-is-origin] {
+  --badge-text: 'Origin';
+  --badge-background-color: var(--color-purple-600);
+  --badge-text-color: var(--color-white);
+}
+
+.k-localizations-section .k-item[data-is-current] .k-item-title {
+  font-weight: var(--font-bold);
+}
+
+.k-localizations-section .k-item[data-is-origin] .k-item-title::after,
+.k-localizations-section .k-item[data-is-current] .k-item-title::after {
+  content: var(--badge-text);
+
+  display: inline-block;
+  margin-left: var(--spacing-2);
+  padding: 0 var(--spacing-2);
+
+  font-size: .8em;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: var(--font-bold);
+  background-color: var(--badge-background-color);
+  color: var(--badge-text-color);
+  border-radius: 9999px;
+}
+
