@@ -6,7 +6,7 @@ use Kirby\Cms\Page;
 
 class Localization
 {
-    public function __construct(protected LocalizedSite $site)
+    public function __construct(protected Page $site)
     {
     }
 
@@ -62,7 +62,7 @@ class Localization
         return $this->isDefault() ? '' : $this->code();
     }
 
-    public function site(): LocalizedSite
+    public function site(): Page
     {
         return $this->site;
     }

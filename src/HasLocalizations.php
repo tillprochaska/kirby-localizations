@@ -8,10 +8,10 @@ trait HasLocalizations
 {
     use HasLocalizationActions;
 
-    public function localizedSite(): ?LocalizedSite
+    public function localizedSite(): ?Page
     {
         return $this->parents()
-            ->filter(fn ($parent) => is_a($parent, LocalizedSite::class))
+            ->filter(fn ($parent) => in_array(LocalizedSite::class, class_uses($parent)))
             ->first()
         ;
     }

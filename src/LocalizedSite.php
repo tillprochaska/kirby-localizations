@@ -4,7 +4,7 @@ namespace TillProchaska\KirbyLocalizations;
 
 use Kirby\Cms\Page;
 
-class LocalizedSite extends Page
+trait LocalizedSite
 {
     public function homePage(): ?Page
     {

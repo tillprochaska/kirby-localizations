@@ -35,7 +35,7 @@ class TestCase extends BaseTestCase
         ]);
 
         $this->loadPlugin();
-        $this->setUpTestPageModel();
+        $this->setUpTestPageModels();
         $this->setUpLocalizedSites();
     }
 
@@ -44,11 +44,12 @@ class TestCase extends BaseTestCase
         $this->kirby->extend(require __DIR__.'/../plugin/extensions.php');
     }
 
-    protected function setUpTestPageModel(): void
+    protected function setUpTestPageModels(): void
     {
         $this->kirby->extend([
             'pageModels' => [
                 'test' => TestPage::class,
+                'localized-site' => LocalizedSitePage::class,
             ],
         ]);
     }
