@@ -3,9 +3,9 @@
 namespace TillProchaska\KirbyLocalizations\Tests;
 
 use Kirby\Cms\App;
-use Kirby\Cms\Page;
+use Kirby\Data\Data;
 use Kirby\Filesystem\Dir;
-use PHPUnit\Framework\TestCase as BaseTestCase;
+use TillProchaska\KirbyTestUtils\TestCase as BaseTestCase;
 
 /**
  * @internal
@@ -13,49 +13,26 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
  */
 class TestCase extends BaseTestCase
 {
-    public const KIRBY_DIR = __DIR__.'/support/kirby';
+    public const CONTENT_DIR = __DIR__.'/support/kirby/content';
 
-    protected App $kirby;
-
-    protected function setUp(): void
+    protected function beforeKirbyInit(): void
     {
-        if (Dir::exists(static::KIRBY_DIR)) {
-            Dir::remove(static::KIRBY_DIR);
+        // Create temporary storage directory
+        if (Dir::exists(static::CONTENT_DIR)) {
+            Dir::remove(static::CONTENT_DIR);
         }
 
-        Dir::make(static::KIRBY_DIR);
+        Dir::make(static::CONTENT_DIR);
 
-        $this->kirby = new App([
-            'roots' => [
-                'index' => __DIR__.'/support/kirby',
-            ],
-            'urls' => [
-                'index' => 'https://example.org',
-            ],
-        ]);
+        // Register plugin
+        if (null === App::plugin('tillprochaska/localizations')) {
+            App::plugin('tillprochaska/localizations', array_merge(
+                require __DIR__.'/../plugin/extensions.php',
+                ['root' => __DIR__.'/..'],
+            ));
+        }
 
-        $this->loadPlugin();
-        $this->setUpTestPageModels();
-        $this->setUpLocalizedSites();
-    }
-
-    protected function loadPlugin(): void
-    {
-        $this->kirby->extend(require __DIR__.'/../plugin/extensions.php');
-    }
-
-    protected function setUpTestPageModels(): void
-    {
-        $this->kirby->extend([
-            'pageModels' => [
-                'test' => TestPage::class,
-                'localized-site' => LocalizedSitePage::class,
-            ],
-        ]);
-    }
-
-    protected function setUpLocalizedSites(): void
-    {
+        // Create localized sites
         $localizations = [
             [
                 'code' => 'en',
@@ -75,30 +52,46 @@ class TestCase extends BaseTestCase
             ],
         ];
 
-        $this->kirby->impersonate('kirby');
-
         foreach ($localizations as $localization) {
-            $site = Page::create([
-                'parent' => null,
-                'slug' => $localization['code'],
-                'template' => 'localized-site',
-                'draft' => false,
-                'content' => [
-                    'title' => $localization['name'],
-                    'locale' => $localization['locale'],
-                    'default' => $localization['default'] ?? null,
-                ],
+            // Create localized site directories manually (i.e. without
+            // using Kirby’s API), because we want them to exist before
+            // Kirby is initialized and plugin hooks run.
+            $dir = static::CONTENT_DIR.'/'.$localization['code'];
+            $site = $dir.'/localized-site.txt';
+            $error = $dir.'/error/test.txt';
+
+            Data::write($site, [
+                'title' => $localization['name'],
+                'locale' => $localization['locale'],
+                'default' => $localization['default'] ?? null,
             ]);
 
-            Page::create([
-                'parent' => $site,
-                'slug' => 'error',
-                'draft' => false,
-                'template' => 'test',
-                'content' => [
-                    'title' => 'Error',
-                ],
+            Data::write($error, [
+                'title' => 'Error',
             ]);
         }
+    }
+
+    protected function kirbyProps(): array
+    {
+        return [
+            'roots' => [
+                'index' => __DIR__.'/support/kirby',
+            ],
+            'urls' => [
+                'index' => 'https://example.org',
+            ],
+        ];
+    }
+
+    protected function afterKirbyInit(): void
+    {
+        // Set up page models
+        $this->kirby()->extend([
+            'pageModels' => [
+                'test' => TestPage::class,
+                'localized-site' => LocalizedSitePage::class,
+            ],
+        ]);
     }
 }

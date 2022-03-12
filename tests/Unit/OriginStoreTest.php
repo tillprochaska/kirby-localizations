@@ -5,6 +5,8 @@ use TillProchaska\KirbyLocalizations\LocalizationsStore;
 use TillProchaska\KirbyLocalizations\OriginStore;
 
 beforeEach(function () {
+    $this->kirby()->impersonate('kirby');
+
     $this->enPage = Page::create([
         'parent' => page('en'),
         'draft' => false,

@@ -5,7 +5,8 @@
   "require-dev": {
     "pestphp/pest": "^1.21",
     "getkirby/cms": "3.6.1.1",
-    "friendsofphp/php-cs-fixer": "3.4"
+    "friendsofphp/php-cs-fixer": "3.4",
+    "tillprochaska/kirby-test-utils": "dev-main"
   },
   "authors": [
     {
@@ -28,10 +29,22 @@
       "TillProchaska\\KirbyLocalizations\\Tests\\": "tests/"
     }
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/tillprochaska/kirby-test-utils"
+    }
+  ],
   "extra": {
     "kirby-cms-path": false
   },
   "require": {
     "getkirby/composer-installer": "^1.2"
+  },
+  "config": {
+    "allow-plugins": {
+      "getkirby/composer-installer": true,
+      "pestphp/pest-plugin": true
+    }
   }
 }

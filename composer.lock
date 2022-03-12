@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2600af8592d96f8348c138610653632f",
+    "content-hash": "e1213d03ad260a6a51a0d93b77cfc591",
     "packages": [
         {
             "name": "getkirby/composer-installer",
@@ -3603,6 +3603,71 @@
             "time": "2021-11-29T15:30:56+00:00"
         },
         {
+            "name": "symfony/css-selector",
+            "version": "v6.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/css-selector.git",
+                "reference": "1955d595c12c111629cc814d3f2a2ff13580508a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/1955d595c12c111629cc814d3f2a2ff13580508a",
+                "reference": "1955d595c12c111629cc814d3f2a2ff13580508a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\CssSelector\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Jean-François Simon",
+                    "email": "jeanfrancois.simon@sensiolabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Converts CSS selectors to XPath expressions",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/css-selector/tree/v6.0.3"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-01-02T09:55:41+00:00"
+        },
+        {
             "name": "symfony/deprecation-contracts",
             "version": "v3.0.0",
             "source": {
@@ -5023,6 +5088,77 @@
             "time": "2021-07-28T10:34:58+00:00"
         },
         {
+            "name": "tillprochaska/kirby-test-utils",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tillprochaska/kirby-test-utils.git",
+                "reference": "2dd6439949ff4bcf9d70560719c0c15eb2015d03"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tillprochaska/kirby-test-utils/zipball/2dd6439949ff4bcf9d70560719c0c15eb2015d03",
+                "reference": "2dd6439949ff4bcf9d70560719c0c15eb2015d03",
+                "shasum": ""
+            },
+            "require": {
+                "pestphp/pest": "^1.21",
+                "symfony/css-selector": "^6.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.3",
+                "getkirby/cms": "3.6.1.1",
+                "psy/psysh": "@stable"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "kirby-cms-path": false
+            },
+            "autoload": {
+                "files": [
+                    "src/Pest.php"
+                ],
+                "psr-4": {
+                    "TillProchaska\\KirbyTestUtils\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "exclude-from-classmap": [
+                    "tests/support"
+                ],
+                "psr-4": {
+                    "TillProchaska\\KirbyTestUtils\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "pest --coverage"
+                ],
+                "cs": [
+                    "php-cs-fixer fix --dry-run --config=.php-cs -- src/ tests/"
+                ],
+                "cs:fix": [
+                    "php-cs-fixer fix --config=.php-cs -- src/ tests/"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Till Prochaska",
+                    "email": "mail@tillprochaska.de"
+                }
+            ],
+            "description": "Test Kirby 3 websites with Pest.",
+            "support": {
+                "source": "https://github.com/tillprochaska/kirby-test-utils/tree/main",
+                "issues": "https://github.com/tillprochaska/kirby-test-utils/issues"
+            },
+            "time": "2022-03-12T21:25:24+00:00"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.10.0",
             "source": {
@@ -5083,10 +5219,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "tillprochaska/kirby-test-utils": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }
