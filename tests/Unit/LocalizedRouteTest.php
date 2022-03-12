@@ -35,6 +35,19 @@ it('prepends localization path to pattern', function () {
     expect($patterns)->toContain('de/test/(:any)', 'fr/test/(:any)', '/test/(:any)');
 });
 
+it('does not add unnecessary slash after localization path', function () {
+    $localizations = site()->localizations();
+
+    $withSlash = new LocalizedRoute(['pattern' => '/test', 'action' => fn () => 0]);
+    $withoutSlash = new LocalizedRoute(['pattern' => 'test', 'action' => fn () => 0]);
+
+    $withSlash = A::pluck($withSlash->expand($localizations), 'pattern');
+    $withoutSlash = A::pluck($withoutSlash->expand($localizations), 'pattern');
+
+    expect($withSlash)->toEqual(['de/test', 'fr/test', '/test']);
+    expect($withoutSlash)->toEqual(['de/test', 'fr/test', '/test']);
+});
+
 it('returns localization root paths if pattern is empty', function () {
     $routes = (new LocalizedRoute([
         'pattern' => '',

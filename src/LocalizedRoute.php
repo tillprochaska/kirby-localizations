@@ -2,6 +2,8 @@
 
 namespace TillProchaska\KirbyLocalizations;
 
+use Kirby\Http\Path;
+
 class LocalizedRoute
 {
     public function __construct(protected array $options)
@@ -34,7 +36,10 @@ class LocalizedRoute
     protected function expandPattern(Localization $localization): string
     {
         if ($pattern = $this->options['pattern']) {
-            return $localization->path().'/'.$pattern;
+            return (new Path($pattern))
+                ->prepend($localization->path())
+                ->toString()
+            ;
         }
 
         if ('' === $localization->path()) {
