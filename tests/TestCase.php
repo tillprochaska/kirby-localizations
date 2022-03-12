@@ -28,7 +28,13 @@ class TestCase extends BaseTestCase
         if (null === App::plugin('tillprochaska/localizations')) {
             App::plugin('tillprochaska/localizations', array_merge(
                 require __DIR__.'/../plugin/extensions.php',
-                ['root' => __DIR__.'/..'],
+                [
+                    'root' => __DIR__.'/..',
+                    'pageModels' => [
+                        'test' => TestPage::class,
+                        'localized-site' => LocalizedSitePage::class,
+                    ],
+                ],
             ));
         }
 
@@ -82,16 +88,5 @@ class TestCase extends BaseTestCase
                 'index' => 'https://example.org',
             ],
         ];
-    }
-
-    protected function afterKirbyInit(): void
-    {
-        // Set up page models
-        $this->kirby()->extend([
-            'pageModels' => [
-                'test' => TestPage::class,
-                'localized-site' => LocalizedSitePage::class,
-            ],
-        ]);
     }
 }
