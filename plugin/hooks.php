@@ -1,5 +1,6 @@
 <?php
 
+use Kirby\Toolkit\Collection;
 use TillProchaska\KirbyLocalizations\Localization;
 use TillProchaska\KirbyLocalizations\LocalizedRoute;
 
@@ -25,6 +26,17 @@ return [
             },
         ]);
 
+        $customRoutes = (new Collection(kirby()->option('tillprochaska.localizations.routes', [])))
+            ->map(function (array $route) use ($localizations) {
+                $localizedRoute = new LocalizedRoute($route);
+
+                return $localizedRoute->expand($localizations);
+            })
+            ->values()
+        ;
+
+        $customRoutes = array_merge(...$customRoutes);
+
         $errorRoute = new LocalizedRoute([
             'pattern' => '(:all)',
             'method' => 'ALL',
@@ -35,6 +47,7 @@ return [
 
         kirby()->extend([
             'routes' => [
+                ...$customRoutes,
                 ...$homeRoute->expand($localizations),
                 ...$defaultRoute->expand($localizations),
                 ...$errorRoute->expand($localizations),
