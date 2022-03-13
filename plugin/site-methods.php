@@ -9,7 +9,7 @@ return [
     },
 
     'currentLocalization' => function () {
-        return $this->localizations()->current();
+        return $this->localizations()->current() ?? $this->localizations()->default();
     },
 
     'localized' => function (?Localization $localization = null) {

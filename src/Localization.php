@@ -34,7 +34,7 @@ class Localization
 
     public function isCurrent(): bool
     {
-        return site()->page()->localization()->is($this);
+        return site()->page()?->localization()->is($this) ?? false;
     }
 
     public function code(): string
