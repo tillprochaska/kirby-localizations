@@ -25,17 +25,13 @@ class TestCase extends BaseTestCase
         Dir::make(static::CONTENT_DIR);
 
         // Register plugin
-        if (null === App::plugin('tillprochaska/localizations')) {
-            App::plugin('tillprochaska/localizations', array_merge(
-                require __DIR__.'/../plugin/extensions.php',
-                [
-                    'root' => __DIR__.'/..',
-                    'pageModels' => [
-                        'test' => TestPage::class,
-                        'localized-site' => LocalizedSitePage::class,
-                    ],
+        if (null === App::plugin('tillprochaska/localizations-tests')) {
+            App::plugin('tillprochaska/localizations-tests', [
+                'pageModels' => [
+                    'test' => TestPage::class,
+                    'localized-site' => LocalizedSitePage::class,
                 ],
-            ));
+            ]);
         }
 
         // Create localized sites
