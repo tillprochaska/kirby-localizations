@@ -6,8 +6,51 @@ use Kirby\Cms\Page;
 
 trait HasLocalizationActions
 {
+    public function isLocalizable(Localization $localization): bool
+    {
+        return null !== $this->parent()->localized($localization);
+    }
+
+    public function linkLocalizedPage(Page $localizedPage): Page
+    {
+        if ($localizedPage->isOrigin()) {
+            throw new \Exception('Can’t link this page, as it already has other localizations.');
+        }
+
+        $localization = $localizedPage->localization();
+
+        if (!$this->isLocalizable($localization)) {
+            throw new \Exception('Can’t localize this page, because the parent page is not localized.');
+        }
+
+        if ($this->localized($localizedPage->localization())) {
+            throw new \Exception('Can’t localize this page: A localization already exists.');
+        }
+
+        if (!$this->parent()->localized($localization)->is($localizedPage->parent())) {
+            throw new \Exception('Can’t localize this page: Localizations must have the same parent page.');
+        }
+
+        if (!$this->isOrigin() && $this->origin()) {
+            $this->origin()->linkLocalizedPage($localizedPage);
+
+            return $this;
+        }
+
+        $origin = $this->origin() ?? $this;
+
+        $origin->localizationsStore()->set($localizedPage);
+        $localizedPage->originStore()->set($origin);
+
+        return $this;
+    }
+
     public function localize(Localization $localization): Page
     {
+        if (!$this->isLocalizable($localization)) {
+            throw new \Exception('Can’t localize this page, because the parent page is not localized.');
+        }
+
         if ($this->localized($localization)) {
             throw new \Exception('Can’t localize this page: A localization already exists.');
         }
@@ -18,15 +61,9 @@ trait HasLocalizationActions
             return $this;
         }
 
-        $localizedParent = $this->parent()->localized($localization);
-
-        if (!$localizedParent) {
-            throw new \Exception('Can’t localize this page, because the parent page is not localize.');
-        }
-
         $localizedPage = $this->copy([
             'slug' => $this->slug(),
-            'parent' => $localizedParent,
+            'parent' => $this->parent()->localized($localization),
             'isDraft' => true, // Always create new localizations as drafts
             'children' => false, // Don't copy children
             'files' => true, // Copy all children to new localization
@@ -38,8 +75,7 @@ trait HasLocalizationActions
             $localizedPage->localizationsStore()->delete();
         }
 
-        $this->localizationsStore()->set($localizedPage);
-        $localizedPage->originStore()->set($this);
+        $this->linkLocalizedPage($localizedPage);
 
         return $localizedPage;
     }

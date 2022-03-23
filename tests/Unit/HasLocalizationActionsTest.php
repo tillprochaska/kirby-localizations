@@ -40,6 +40,29 @@ beforeEach(function () {
     (new LocalizationsStore($this->enPage))->set($this->dePage);
 });
 
+it('checks wether page can be localized', function () {
+    expect($this->enPage)->isLocalizable(Localization::FR())->toBeTrue();
+    expect($this->enChild)->isLocalizable(Localization::FR())->toBeFalse();
+});
+
+it('links existing page to origin page', function () {
+    expect($this->enPage)->localizations()->pluck('code')->toContain('en', 'de');
+    expect($this->frPage)->localizations()->pluck('code')->toContain('fr');
+    $this->enPage->linkLocalizedPage($this->frPage);
+    expect($this->frPage)->origin()->toBePage('en/hello-world');
+    expect($this->frPage)->localizations()->pluck('code')->toContain('en', 'de', 'fr');
+    expect($this->enPage)->localizations()->pluck('code')->toContain('en', 'de', 'fr');
+});
+
+it('links existing page to localized page', function () {
+    expect($this->dePage)->localizations()->pluck('code')->toContain('en', 'de');
+    expect($this->frPage)->localizations()->pluck('code')->toContain('fr');
+    $this->dePage->linkLocalizedPage($this->frPage);
+    expect($this->frPage)->origin()->toBePage('en/hello-world');
+    expect($this->frPage)->localizations()->pluck('code')->toContain('en', 'de', 'fr');
+    expect($this->dePage)->localizations()->pluck('code')->toContain('en', 'de', 'fr');
+});
+
 it('creates new localized page', function () {
     $this->enPage->localize(Localization::FR());
 
@@ -94,7 +117,7 @@ it('updates localizaitons after changing the slug', function () {
 
 it('updates origins of localized pages and drafts after changing the slug', function () {
     $frPage = $this->enPage->localize(Localization::FR());
-    expect($frPage->origin())->tobePage('en/hello-world');
+    expect($frPage->origin())->toBePage('en/hello-world');
 
     $this->enPage->changeSlug('new-slug');
     expect($this->dePage->origin())->toBePage('en/new-slug');
