@@ -73,6 +73,7 @@ it('returns return value of original action', function () {
 it('sets locale', function () {
     ($this->localizedAction)('slug');
     expect(kirby()->option('locale'))->toEqual('de_DE');
+    expect(setlocale(LC_ALL, 0))->toEqual('de_DE');
 });
 
 it('sorts expanded routes with least specific routes coming last', function () {

@@ -55,11 +55,12 @@ class LocalizedRoute
 
         return function (...$args) use ($action, $localization) {
             if ($localization->locale()) {
+                setlocale(LC_ALL, $localization->locale());
+
                 // If multilang mode is inactive, Kirby sets the locale
-                // everytime you call `resolve`, i.e. if we called `setlocale`
-                // directly, Kirby would overwrite it. Instead, we set the
-                // locale configuration option (which Kirby uses when it sets
-                // the locale).
+                // everytime you call `resolve`. That’s why we also need
+                // to set the locale configuration option (which Kirby
+                // uses when it sets the locale).
 
                 kirby()->extend([
                     'options' => [
