@@ -29,6 +29,7 @@ class TestCase extends BaseTestCase
             App::plugin('tillprochaska/localizations-tests', [
                 'pageModels' => [
                     'test' => TestPage::class,
+                    'error' => TestPage::class,
                     'localized-site' => LocalizedSitePage::class,
                 ],
             ]);

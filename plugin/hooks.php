@@ -1,8 +1,10 @@
 <?php
 
+use Kirby\Cms\Page;
 use Kirby\Toolkit\Collection;
 use TillProchaska\KirbyLocalizations\Localization;
 use TillProchaska\KirbyLocalizations\LocalizedRoute;
+use TillProchaska\KirbyLocalizations\LocalizedSite;
 
 return [
     'system.loadPlugins:after' => function () {
@@ -51,6 +53,24 @@ return [
                 ...$homeRoute->expand($localizations),
                 ...$defaultRoute->expand($localizations),
                 ...$errorRoute->expand($localizations),
+            ],
+        ]);
+    },
+
+    'page.create:after' => function (Page $page) {
+        if (!in_array(LocalizedSite::class, class_uses($page))) {
+            return;
+        }
+
+        kirby()->impersonate('kirby');
+
+        Page::create([
+            'parent' => $page,
+            'draft' => false,
+            'slug' => 'error',
+            'template' => 'error',
+            'content' => [
+                'title' => 'Error',
             ],
         ]);
     },

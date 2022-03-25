@@ -11,7 +11,7 @@ trait LocalizedSite
         return $this->find('home');
     }
 
-    public function errorPage(): ?Page
+    public function errorPage(): Page
     {
         return $this->find('error');
     }
