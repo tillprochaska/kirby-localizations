@@ -41,6 +41,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Install locales
+      run: |
+        sudo locale-gen de_DE
+        sudo locale-gen en_US
+        sudo locale-gen fr_FR
+        sudo update-locale
+
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
