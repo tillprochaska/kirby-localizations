@@ -1,5 +1,6 @@
 <?php
 
+use Kirby\Cms\File;
 use Kirby\Cms\Page;
 use Kirby\Toolkit\Collection;
 use TillProchaska\KirbyLocalizations\Localization;
@@ -9,24 +10,6 @@ use TillProchaska\KirbyLocalizations\LocalizedSite;
 return [
     'system.loadPlugins:after' => function () {
         $localizations = site()->localizations();
-
-        $homeRoute = new LocalizedRoute([
-            'pattern' => '',
-            'method' => 'ALL',
-            'action' => function (Localization $localization) {
-                return site()->visit($localization->homePage() ?: $localization->errorPage());
-            },
-        ]);
-
-        $defaultRoute = new LocalizedRoute([
-            'pattern' => '(:all)',
-            'method' => 'ALL',
-            'action' => function (Localization $localization, string $path) {
-                $page = kirby()->resolve($localization->code().'/'.$path);
-
-                return site()->visit($page ?: $localization->errorPage());
-            },
-        ]);
 
         $customRoutes = (new Collection(kirby()->option('tillprochaska.localizations.routes', [])))
             ->map(function (array $route) use ($localizations) {
@@ -38,6 +21,46 @@ return [
         ;
 
         $customRoutes = array_merge(...$customRoutes);
+
+        $homeRoute = new LocalizedRoute([
+            'pattern' => '',
+            'method' => 'ALL',
+            'action' => function (Localization $localization) {
+                if (!$localization->homePage()) {
+                    return $this->next();
+                }
+
+                return site()->visit($localization->homePage());
+            },
+        ]);
+
+        $defaultRoute = new LocalizedRoute([
+            'pattern' => '(:all)',
+            'method' => 'ALL',
+            'action' => function (Localization $localization, string $path) {
+                $page = kirby()->resolve($localization->code().'/'.$path);
+
+                if (!$page || !is_a($page, Page::class)) {
+                    return $this->next();
+                }
+
+                return site()->visit($page);
+            },
+        ]);
+
+        $fileRoute = new LocalizedRoute([
+            'pattern' => '(:all)',
+            'method' => 'ALL',
+            'action' => function (Localization $localization, string $path) {
+                $file = kirby()->resolve($path);
+
+                if (!$file || !is_a($file, File::class)) {
+                    return $this->next();
+                }
+
+                return $file;
+            },
+        ]);
 
         $errorRoute = new LocalizedRoute([
             'pattern' => '(:all)',
@@ -52,6 +75,7 @@ return [
                 ...$customRoutes,
                 ...$homeRoute->expand($localizations),
                 ...$defaultRoute->expand($localizations),
+                ...$fileRoute->expand($localizations),
                 ...$errorRoute->expand($localizations),
             ],
         ]);
