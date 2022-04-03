@@ -69,8 +69,14 @@ class TestCase extends BaseTestCase
                 'default' => $localization['default'] ?? null,
             ]);
 
+            $errorTitle = [
+                'en' => 'Error',
+                'de' => 'Fehler',
+                'fr' => 'Erreur',
+            ];
+
             Data::write($error, [
-                'title' => 'Error',
+                'title' => $errorTitle[$localization['code']],
             ]);
         }
     }
@@ -80,6 +86,7 @@ class TestCase extends BaseTestCase
         return [
             'roots' => [
                 'index' => __DIR__.'/support/kirby',
+                'site' => __DIR__.'/support/kirby/site',
             ],
             'urls' => [
                 'index' => 'https://example.org',
