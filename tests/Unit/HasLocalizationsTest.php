@@ -3,6 +3,7 @@
 use Kirby\Cms\Page;
 use TillProchaska\KirbyLocalizations\Localization;
 use TillProchaska\KirbyLocalizations\LocalizationsStore;
+use TillProchaska\KirbyLocalizations\LocalizedPageBlueprint;
 use TillProchaska\KirbyLocalizations\OriginStore;
 
 beforeEach(function () {
@@ -122,4 +123,8 @@ it('checks if it is home page of a localized site', function () {
 it('checks if it is error page of a localized site', function () {
     $error = page('en/error');
     expect($error->isErrorPage())->toBeTrue();
+});
+
+it('returns LocalizedPageBlueprint', function () {
+    expect($this->enPage->blueprint())->toBeInstanceOf(LocalizedPageBlueprint::class);
 });

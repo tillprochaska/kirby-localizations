@@ -13,16 +13,16 @@ use TillProchaska\KirbyTestUtils\TestCase as BaseTestCase;
  */
 class TestCase extends BaseTestCase
 {
-    public const CONTENT_DIR = __DIR__.'/support/kirby/content';
+    public const STORAGE_DIR = __DIR__.'/support/kirby/storage';
 
     protected function beforeKirbyInit(): void
     {
         // Create temporary storage directory
-        if (Dir::exists(static::CONTENT_DIR)) {
-            Dir::remove(static::CONTENT_DIR);
+        if (Dir::exists(static::STORAGE_DIR)) {
+            Dir::remove(static::STORAGE_DIR);
         }
 
-        Dir::make(static::CONTENT_DIR);
+        Dir::make(static::STORAGE_DIR);
 
         // Register plugin
         if (null === App::plugin('tillprochaska/localizations-tests')) {
@@ -30,6 +30,7 @@ class TestCase extends BaseTestCase
                 'pageModels' => [
                     'test' => TestPage::class,
                     'error' => TestPage::class,
+                    'home' => TestPage::class,
                     'localized-site' => LocalizedSitePage::class,
                 ],
             ]);
@@ -59,7 +60,7 @@ class TestCase extends BaseTestCase
             // Create localized site directories manually (i.e. without
             // using Kirby’s API), because we want them to exist before
             // Kirby is initialized and plugin hooks run.
-            $dir = static::CONTENT_DIR.'/'.$localization['code'];
+            $dir = static::STORAGE_DIR.'/content/'.$localization['code'];
             $site = $dir.'/localized-site.txt';
             $error = $dir.'/error/test.txt';
 
@@ -87,6 +88,8 @@ class TestCase extends BaseTestCase
             'roots' => [
                 'index' => __DIR__.'/support/kirby',
                 'site' => __DIR__.'/support/kirby/site',
+                'content' => static::STORAGE_DIR.'/content',
+                'accounts' => static::STORAGE_DIR.'/accounts',
             ],
             'urls' => [
                 'index' => 'https://example.org',

@@ -102,6 +102,24 @@ trait HasLocalizations
         return "{$code}/error" === $this->id();
     }
 
+    public function blueprint(): LocalizedPageBlueprint
+    {
+        if (!is_a($this->blueprint, LocalizedPageBlueprint::class)) {
+            $this->blueprint = LocalizedPageBlueprint::factory(
+                name: 'pages/'.$this->intendedTemplate(),
+                fallback: 'pages/default',
+                model: $this,
+            );
+        }
+
+        return $this->blueprint;
+    }
+
+    protected function rules(): LocalizedPageRules
+    {
+        return new LocalizedPageRules();
+    }
+
     protected function localizationsStore(): LocalizationsStore
     {
         return new LocalizationsStore($this);
