@@ -26,11 +26,18 @@ return [
             'pattern' => '',
             'method' => 'ALL',
             'action' => function (Localization $localization) {
-                if (!$localization->homePage()) {
+                $homePage = $localization->homePage() ?? $localization->site()->draft('home');
+                $token = kirby()->request()->query()->get('token');
+
+                if (!$homePage) {
                     return $this->next();
                 }
 
-                return site()->visit($localization->homePage());
+                if ($homePage->isDraft() && !$homePage->isVerified($token)) {
+                    return site()->visit($localization->errorPage());
+                }
+
+                return site()->visit($homePage);
             },
         ]);
 

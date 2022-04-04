@@ -5093,12 +5093,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tillprochaska/kirby-test-utils.git",
-                "reference": "2dd6439949ff4bcf9d70560719c0c15eb2015d03"
+                "reference": "207b4b01e8b91f0df7e6f13ba88bbad1456161b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tillprochaska/kirby-test-utils/zipball/2dd6439949ff4bcf9d70560719c0c15eb2015d03",
-                "reference": "2dd6439949ff4bcf9d70560719c0c15eb2015d03",
+                "url": "https://api.github.com/repos/tillprochaska/kirby-test-utils/zipball/207b4b01e8b91f0df7e6f13ba88bbad1456161b6",
+                "reference": "207b4b01e8b91f0df7e6f13ba88bbad1456161b6",
                 "shasum": ""
             },
             "require": {
@@ -5156,7 +5156,7 @@
                 "source": "https://github.com/tillprochaska/kirby-test-utils/tree/main",
                 "issues": "https://github.com/tillprochaska/kirby-test-utils/issues"
             },
-            "time": "2022-03-12T21:25:24+00:00"
+            "time": "2022-04-04T10:25:32+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -5226,5 +5226,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
