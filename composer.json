@@ -9,7 +9,7 @@
   "require-dev": {
     "pestphp/pest": "^1.21",
     "friendsofphp/php-cs-fixer": "3.4",
-    "tillprochaska/kirby-test-utils": "dev-main"
+    "tillprochaska/kirby-test-utils": "0.1.0"
   },
   "authors": [
     {
@@ -33,12 +33,6 @@
       "TillProchaska\\KirbyLocalizations\\Tests\\": "tests/"
     }
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/tillprochaska/kirby-test-utils"
-    }
-  ],
   "extra": {
     "kirby-cms-path": false
   },
