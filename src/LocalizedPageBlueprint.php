@@ -18,12 +18,14 @@ class LocalizedPageBlueprint extends PageBlueprint
             return $normalized;
         }
 
-        return [
-            ...$normalized,
-            'draft' => [
-                'label' => $this->i18n('page.status.draft'),
-                'text' => null,
+        return array_merge(
+            $normalized,
+            [
+                'draft' => [
+                    'label' => $this->i18n('page.status.draft'),
+                    'text' => null,
+                ],
             ],
-        ];
+        );
     }
 }
